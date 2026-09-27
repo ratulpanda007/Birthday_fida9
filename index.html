@@ -1,0 +1,803 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Birthday Photo Surprise</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #080812;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* =========================
+   MAIN SCENE
+========================= */
+
+#scene {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+#countdown {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 150px;
+
+    font-weight: bold;
+
+    z-index: 20;
+
+    background: #080812;
+}
+
+
+/* =========================
+   BIRTHDAY MESSAGE
+========================= */
+
+#birthday {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    z-index: 15;
+
+    background: radial-gradient(
+        circle,
+        #fff8df,
+        #e7d7b0
+    );
+
+    color: #3d3525;
+}
+
+
+#birthday h1 {
+
+    font-size: 55px;
+
+    margin: 0;
+
+}
+
+
+#birthday h2 {
+
+    font-size: 30px;
+
+    color: #d69b00;
+
+}
+
+
+/* =========================
+   PHOTO AREA
+========================= */
+
+#photos {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: none;
+
+    background: #f2eee7;
+
+}
+
+
+/* =========================
+   POLAROID
+========================= */
+
+.photo {
+
+    position: absolute;
+
+    width: 150px;
+
+    padding: 8px;
+
+    padding-bottom: 25px;
+
+    background: white;
+
+    box-shadow: 0 10px 30px #0005;
+
+    transform: rotate(var(--rotation));
+
+    animation: appear 1s ease forwards;
+
+}
+
+
+.photo img {
+
+    width: 100%;
+
+    height: 150px;
+
+    object-fit: cover;
+
+}
+
+
+@keyframes appear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            scale(.3)
+            rotate(var(--rotation));
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            rotate(var(--rotation));
+
+    }
+
+}
+
+
+/* =========================
+   FLOATING PHOTOS
+========================= */
+
+.floating {
+
+    position: absolute;
+
+    width: 120px;
+
+    padding: 6px;
+
+    background: white;
+
+    box-shadow: 0 5px 25px #0008;
+
+    animation:
+        floatAround
+        linear
+        infinite;
+
+}
+
+
+.floating img {
+
+    width: 100%;
+
+    display: block;
+
+}
+
+
+@keyframes floatAround {
+
+    0% {
+
+        transform:
+            translateY(110vh)
+            rotate(0deg);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(-150px)
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================
+   FINAL SCREEN
+========================= */
+
+#final {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    background: #050511;
+
+    z-index: 50;
+
+}
+
+
+#final h1 {
+
+    font-size: 45px;
+
+}
+
+
+#final p {
+
+    font-size: 20px;
+
+    opacity: .8;
+
+}
+
+
+/* =========================
+   HEARTS
+========================= */
+
+.heart {
+
+    position: absolute;
+
+    font-size: 25px;
+
+    animation:
+        hearts
+        5s
+        linear
+        infinite;
+
+}
+
+
+@keyframes hearts {
+
+    from {
+
+        transform:
+            translateY(100vh);
+
+        opacity: 0;
+
+    }
+
+    20% {
+
+        opacity: 1;
+
+    }
+
+    to {
+
+        transform:
+            translateY(-100px);
+
+        opacity: 0;
+
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px) {
+
+    #birthday h1 {
+
+        font-size: 40px;
+
+    }
+
+    #birthday h2 {
+
+        font-size: 23px;
+
+    }
+
+    .photo {
+
+        width: 110px;
+
+    }
+
+    .photo img {
+
+        height: 110px;
+
+    }
+
+    .floating {
+
+        width: 90px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     MAIN VIDEO
+========================= -->
+
+<div id="scene">
+
+
+    <!-- COUNTDOWN -->
+
+    <div id="countdown">
+
+        3
+
+    </div>
+
+
+    <!-- BIRTHDAY MESSAGE -->
+
+    <div id="birthday">
+
+        <h1>
+            Happy Birthday Cutiee ❤️
+        </h1>
+
+        <h2>
+            My Special Fida
+        </h2>
+
+    </div>
+
+
+    <!-- PHOTOS -->
+
+    <div id="photos"></div>
+
+
+    <!-- FINAL -->
+
+    <div id="final">
+
+        <h1>
+            ❤️ Happy Birthday ❤️
+        </h1>
+
+        <p>
+            Every picture holds a beautiful memory.
+        </p>
+
+        <p>
+            And there are many more memories to come ✨
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =================================================
+   ⭐ STEP 1: ADD YOUR PHOTO FILENAMES HERE
+================================================= */
+
+
+/*
+   Your photos must be inside the "photos" folder.
+
+   Example:
+
+   Birthday Surprise/
+       birthday.html
+
+       photos/
+           photo1.jpg
+           photo2.jpg
+           photo3.jpg
+
+*/
+
+
+const photos = [
+
+    "photos/WhatsApp Image 2026-08-10 at 7.41.27 AM (1).jpeg",
+
+    "photos/WhatsApp Image 2026-09-02 at 1.39.52 AM (14).jpeg",
+
+    "photos/WhatsApp Image 2026-08-10 at 7.44.07 AM.jpeg",
+
+    "photos/WhatsApp Image 2026-09-02 at 1.39.52 AM (15).jpeg",
+
+    "photos/WhatsApp Image 2026-09-27 at 8.27.24 PM (1).jpeg"
+
+];
+
+
+
+/* =================================================
+   ⭐ STEP 2: CHANGE THE NAME HERE
+================================================= */
+
+const birthdayName =
+    "My Special Person Fida";
+
+
+
+/* =================================================
+   GET HTML ELEMENTS
+================================================= */
+
+const countdown =
+    document.getElementById("countdown");
+
+const birthday =
+    document.getElementById("birthday");
+
+const photosArea =
+    document.getElementById("photos");
+
+const finalScreen =
+    document.getElementById("final");
+
+
+
+/* Put the name into birthday message */
+
+birthday.querySelector("h2").innerText =
+    birthdayName;
+
+
+
+/* =================================================
+   START ANIMATION
+================================================= */
+
+startAnimation();
+
+
+
+/* =================================================
+   COUNTDOWN
+================================================= */
+
+function startAnimation() {
+
+    let number = 3;
+
+    countdown.innerText = number;
+
+
+    let timer = setInterval(() => {
+
+        number--;
+
+
+        if (number > 0) {
+
+            countdown.innerText = number;
+
+        }
+
+
+        else {
+
+            clearInterval(timer);
+
+            countdown.style.display = "none";
+
+            showBirthday();
+
+        }
+
+    }, 1200);
+
+}
+
+
+
+/* =================================================
+   BIRTHDAY MESSAGE
+================================================= */
+
+function showBirthday() {
+
+    birthday.style.display = "flex";
+
+
+    setTimeout(() => {
+
+        birthday.style.display = "none";
+
+        showPhotos();
+
+    }, 4500);
+
+}
+
+
+
+/* =================================================
+   POLAROID PHOTOS
+================================================= */
+
+function showPhotos() {
+
+    photosArea.style.display = "block";
+
+    photosArea.innerHTML = "";
+
+
+    photos.forEach((photo, index) => {
+
+
+        let card =
+            document.createElement("div");
+
+
+        card.className = "photo";
+
+
+        /* Random position */
+
+        let x =
+            Math.random() * 75 + 5;
+
+        let y =
+            Math.random() * 70 + 5;
+
+
+        /* Random rotation */
+
+        let rotation =
+            Math.random() * 30 - 15;
+
+
+        card.style.left =
+            x + "%";
+
+
+        card.style.top =
+            y + "%";
+
+
+        card.style.setProperty(
+            "--rotation",
+            rotation + "deg"
+        );
+
+
+        /* Add image */
+
+        card.innerHTML = `
+
+            <img
+                src="${photo}"
+                alt="Memory"
+            >
+
+        `;
+
+
+        photosArea.appendChild(card);
+
+    });
+
+
+
+    /* After 5 seconds,
+       start floating photos */
+
+    setTimeout(() => {
+
+        createFloatingPhotos();
+
+    }, 5000);
+
+}
+
+
+
+/* =================================================
+   FLOATING PHOTOS
+================================================= */
+
+function createFloatingPhotos() {
+
+    photosArea.innerHTML = "";
+
+
+    /* Create 20 floating photos */
+
+    for (let i = 0; i < 20; i++) {
+
+
+        /* Select random photo */
+
+        let photo =
+            photos[
+                Math.floor(
+                    Math.random() *
+                    photos.length
+                )
+            ];
+
+
+        let photoElement =
+            document.createElement("div");
+
+
+        photoElement.className =
+            "floating";
+
+
+        /* Random horizontal position */
+
+        photoElement.style.left =
+            Math.random() * 100 + "%";
+
+
+        /* Random speed */
+
+        photoElement.style.animationDuration =
+            (6 + Math.random() * 7) + "s";
+
+
+        /* Random delay */
+
+        photoElement.style.animationDelay =
+            Math.random() * 5 + "s";
+
+
+        /* Add image */
+
+        photoElement.innerHTML = `
+
+            <img
+                src="${photo}"
+                alt="Memory"
+            >
+
+        `;
+
+
+        photosArea.appendChild(
+            photoElement
+        );
+
+    }
+
+
+
+    /* After 15 seconds,
+       show final screen */
+
+    setTimeout(() => {
+
+        photosArea.style.display =
+            "none";
+
+        showFinal();
+
+    }, 15000);
+
+}
+
+
+
+/* =================================================
+   FINAL SCREEN
+================================================= */
+
+function showFinal() {
+
+    finalScreen.style.display =
+        "flex";
+
+
+    /* Create floating hearts */
+
+    for (let i = 0; i < 25; i++) {
+
+
+        let heart =
+            document.createElement("div");
+
+
+        heart.className =
+            "heart";
+
+
+        heart.innerHTML =
+            "❤️";
+
+
+        heart.style.left =
+            Math.random() * 100 + "%";
+
+
+        heart.style.animationDelay =
+            Math.random() * 5 + "s";
+
+
+        heart.style.animationDuration =
+            (4 + Math.random() * 5) + "s";
+
+
+        finalScreen.appendChild(
+            heart
+        );
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>
+```
